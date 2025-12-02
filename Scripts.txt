@@ -1,0 +1,89 @@
+CREATE TABLE Jogos (
+    id SERIAL PRIMARY KEY,
+    nome_jogo VARCHAR(100) NOT NULL,
+    tipo_jogo VARCHAR(50) NOT NULL,
+    modo_jogo VARCHAR(20) NOT NULL
+);
+
+
+INSERT INTO Jogos (nome_jogo, tipo_jogo, modo_jogo) VALUES
+('League of Legends', 'MOBA', 'Multiplayer'),
+('Counter-Strike 2', 'FPS', 'Multiplayer'),
+('The Witcher 3', 'RPG', 'Solo'),
+('Minecraft', 'Sandbox', 'Multiplayer'),
+('Dark Souls III', 'RPG', 'Solo'),
+('Valorant', 'FPS', 'Multiplayer'),
+('GTA V', 'Ação/Aventura', 'Solo'),
+('GTA Online', 'Ação/Aventura', 'Multiplayer'),
+('FIFA 24', 'Esporte', 'Multiplayer'),
+('Elden Ring', 'RPG', 'Solo'),
+('Rocket League', 'Esporte/Carros', 'Multiplayer'),
+('Fortnite', 'Battle Royale', 'Multiplayer'),
+('God of War (2018)', 'Ação/Aventura', 'Solo'),
+('Apex Legends', 'Battle Royale', 'Multiplayer'),
+('Cyberpunk 2077', 'RPG', 'Solo');
+
+
+CREATE TABLE Plataformas (
+    id SERIAL PRIMARY KEY,
+    nome_plataforma VARCHAR(50)
+);
+
+
+ALTER TABLE Jogos ADD COLUMN plataforma_id INT;
+ALTER TABLE Jogos
+    ADD CONSTRAINT fk_plataforma
+    FOREIGN KEY (plataforma_id)
+    REFERENCES Plataformas(id);
+
+SELECT nome_jogo, tipo_jogo, modo_jogo
+FROM Jogos
+WHERE modo_jogo = 'Multiplayer';
+
+
+SELECT id, nome_jogo, tipo_jogo
+FROM Jogos
+ORDER BY nome_jogo ASC;
+
+
+SELECT *
+FROM Jogos
+ORDER BY id ASC
+LIMIT 5;
+
+
+SELECT j.nome_jogo, j.tipo_jogo, p.nome_plataforma
+FROM Jogos j
+JOIN Plataformas p ON j.plataforma_id = p.id;
+
+
+SELECT j.nome_jogo, j.tipo_jogo, p.nome_plataforma
+FROM Jogos j
+JOIN Plataformas p ON j.plataforma_id = p.id
+WHERE j.tipo_jogo = 'RPG'
+ORDER BY j.nome_jogo ASC;
+
+
+UPDATE Jogos
+SET tipo_jogo = 'Ação'
+WHERE nome_jogo = 'GTA V';
+
+
+UPDATE Jogos
+SET modo_jogo = 'Multiplayer'
+WHERE nome_jogo = 'Dark Souls III';
+
+UPDATE Jogos
+SET nome_jogo = 'The Witcher 3: Wild Hunt',
+    tipo_jogo = 'RPG'
+WHERE id = 3;
+
+DELETE FROM Jogos
+WHERE modo_jogo = 'Solo';
+
+
+DELETE FROM Jogos
+WHERE id = 10;
+
+DELETE FROM Jogos
+WHERE tipo_jogo = 'Esporte';
